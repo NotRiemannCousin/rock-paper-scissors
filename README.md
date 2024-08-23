@@ -8,9 +8,11 @@ the self cross product of a vector, that always result in $\vec{0}$.
 Rock Paper Scissors works in a similar way. Let's denote $P1$ and $P2$ as the choice of each player, and fix $P1$ to always to be evaluated first. ${Rock} \times {Paper} = {P2 \  wins}$ and ${Paper} \times {Rock} = {P1 \  wins}$, the oposite of the first statement. Aditionally, ${Rock} \times {Rock} = {Draw}$. Let's prot a table with these two groups:
 
 ![table with the results of applying cross product with unitary vector components](<imgs/table vectors.png>)
+
 *All possible results by applying cross product with the unitary vector components*
 
 ![table with the results of Rock Paper Scissors](<imgs/table rps.png>)
+
 *All possible results in Rock Paper Scissors*
 
 
