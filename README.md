@@ -2,7 +2,7 @@
 
 ### A simple Rock Paper Scissors game that explores a cool link between the classical game and the $R^3$ linear space: rotative anticommutative operations.
 
-The $R^3$ linear space has an operation called cross product ($\vec{v_{1}} \times \vec{v_{2}}$). This operation is anticommutative, or so, $\vec{v_{1}} \times \vec{v_{2}} \ne \vec{v_{2}} \times \vec{v_{1}}$. To be cleaner, $\vec{v_{2}} \times \vec{v_{1}} = -\vec{v_{1}} \times \vec{v_{2}}$ for $\vec{v_{1}}$ and $\vec{v_{2}}$ different than $\vec{0}$. Other cool property is 
+The $R^3$ linear space has an operation called cross product ($\vec{v_{1}} \times \vec{v_{2}}$). This operation is anticommutative, i.e., $\vec{v_{1}} \times \vec{v_{2}} \ne \vec{v_{2}} \times \vec{v_{1}}$. To be cleaner, $\vec{v_{2}} \times \vec{v_{1}} = -\vec{v_{1}} \times \vec{v_{2}}$ for $\vec{v_{1}}$ and $\vec{v_{2}}$ different than $\vec{0}$. Other cool property is 
 the self cross product of a vector, that always result in $\vec{0}$.
 
 Rock Paper Scissors works in a similar way. Let's denote $P1$ and $P2$ as the choice of each player, and fix $P1$ to always to be evaluated first. ${Rock} \times {Paper} = {P2 \  wins}$ and ${Paper} \times {Rock} = {P1 \  wins}$, the oposite of the first statement. Aditionally, ${Rock} \times {Rock} = {Draw}$. Let's prot a table with these two groups:
