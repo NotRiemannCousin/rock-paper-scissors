@@ -1,4 +1,5 @@
-import { createGrid, createSkyCylinder, setupWebGL, setupMatrix, drawInCanvas } from "./util.js";
+import { setupWebGL, setupMatrix, drawInCanvas } from "./util.js";
+import { createSkyCylinder, createGrid, createAxis } from "./models.js";
 import { initShaderProgram } from "./shader.js";
 import { Matrix4x4 } from './matrix4x4.js';
 
@@ -130,14 +131,13 @@ function drawScene() {
     
     const gridSize = 1.0;
     const gridDivisions = 10;
-
+    const axisSize = 0.2;
 
     drawInCanvas(gl, createSkyCylinder(
-        10, 5, 32,
+        1, 1, 32,
         [0.11, 0.06, 0.11],
         [0.45, 0.45, 0.57],
     ));
-
     
     drawInCanvas(gl, createGrid(gridSize, gridDivisions),
     {
@@ -152,23 +152,7 @@ function drawScene() {
         ]
     });
 
-    for(let [x, y, z] of [[1, 0, 0], [0, 1, 0], [0, 0, 1]]){
-        drawInCanvas(gl, [gl.LINES,[
-                       0,    0,    0,
-                    x*.1, y*.1, z*.1]
-            ],
-            {
-                attribs: [
-                    activeAttributes.position
-                ],
-                genericAttribs: [
-                    {
-                        attrib: activeAttributes.color,
-                        value: new Float32Array([x, y, z]),
-                    }
-                ]
-            });
-    }
+    drawInCanvas(gl, createAxis(axisSize));
 }
 
 function updateCameraView(){
