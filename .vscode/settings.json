@@ -7,6 +7,4 @@
         "**/.DS_Store": true,
         "**/Thumbs.db": true
     },
-    "prettier.tabWidth": 4,
-    "prettier.singleAttributePerLine": false
 }

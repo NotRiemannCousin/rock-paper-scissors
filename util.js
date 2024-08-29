@@ -22,4 +22,14 @@ function HEXToRGB(color) {
     return [r, g, b, a];
 }
 
-export { HEXToRGB };
+function getBackgroundColor(){
+    return HEXToRGB(
+        getComputedStyle(document.body).getPropertyValue(
+            "--game-background-color"
+        )
+    ).map((v) => v / 255);
+}
+
+
+
+export { HEXToRGB, getBackgroundColor };
