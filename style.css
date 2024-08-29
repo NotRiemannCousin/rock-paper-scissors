@@ -1,21 +1,31 @@
 :root {
-    --primary-background-color: #352a42;
+    --primary-background-color: #e9e9e9;
     --primary-shadow-color: #101010;
     --primary-color: #f9f9f9;
 
-    /* --accent-background-color: rgba(128, 128, 128, 0.321);
+    --accent-background-color: rgba(128, 128, 128, 0.321);
     --accent-color: rgb(255, 255, 255);
-    --accent-color-outline: rgb(79, 79, 79); */
+    --accent-color-outline: rgb(79, 79, 79);
     --accent-color-outline: #000000;
 
-    --main-background-color: #666;
+    --main-background-color: #6b8598;
     --game-axis-color: #e9e9e9;
 
 
-    --vec-rock-color: #fd2222;
-    --vec-paper-color: #34f42a;
-    --vec-scissors-color: #294bf6;
+    --vec-rock-color: #ff4343;
+    --vec-paper-color: #5cfd54;
+    --vec-scissors-color: #6379e7;
 }
+
+@media (prefers-color-scheme: dark) {
+    :root {
+        --primary-background-color: #352a42;
+        --primary-shadow-color: #0f181a;
+        --primary-color: #f9f9f9;
+    }
+}
+
+
 
 body,
 html {
@@ -67,7 +77,9 @@ form.player-choices {
 form.player-choices label {
     width: 8em;
     height: 4em;
+
     cursor: pointer;
+    user-select: none;
 
     text-shadow:
     0 1px 0 var(--accent-color-outline),
