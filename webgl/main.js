@@ -1,7 +1,8 @@
+import { createSkyCylinder, createGrid, createAxis, createVector } from "./models.js";
 import { setupWebGL, setupMatrix, drawInCanvas } from "./util.js";
-import { createSkyCylinder, createGrid, createAxis } from "./models.js";
 import { initShaderProgram } from "./shader.js";
-import { Matrix4x4 } from './matrix4x4.js';
+import { Matrix4x4 } from '../LA/matrix4x4.js';
+import { Vector3 } from "../LA/vector3.js";
 
 
 
@@ -40,9 +41,9 @@ const view = {
     angleX: Math.PI / 4,
     angleY: Math.PI / 4,
 
-    zoomLevel: 0.5,
-    minZoom: 0.2,
-    maxZoom: 1,
+    zoomLevel: 5,
+    minZoom: 2,
+    maxZoom: 10,
 
     rotationMatrix: Matrix4x4.identity,
     positionMatrix: Matrix4x4.identity,
@@ -126,15 +127,15 @@ function drawScene() {
     setupMatrix(
         gl,
         "uViewToProj",
-        Matrix4x4.perspective(70 * Math.PI/180, screen.aspectRatio, 0.01, 100)
+        Matrix4x4.perspective(50 * Math.PI/180, screen.aspectRatio, 0.01, 100)
     );
     
-    const gridSize = 1.0;
+    const gridSize = 10.0;
     const gridDivisions = 10;
-    const axisSize = 0.2;
+    const axisSize = 1;
 
     drawInCanvas(gl, createSkyCylinder(
-        1, 1, 32,
+        15, 10, 32,
         [0.11, 0.06, 0.11],
         [0.45, 0.45, 0.57],
     ));
@@ -153,6 +154,9 @@ function drawScene() {
     });
 
     drawInCanvas(gl, createAxis(axisSize));
+    
+    drawInCanvas(gl, createVector(new Vector3(0,1,1), [1, .2, .2], .02));
+
 }
 
 function updateCameraView(){

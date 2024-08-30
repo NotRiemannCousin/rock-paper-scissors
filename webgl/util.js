@@ -1,4 +1,4 @@
-import { Matrix4x4 } from './matrix4x4.js';
+import { Matrix4x4 } from '../LA/matrix4x4.js';
 
 let programInfo;
 /**

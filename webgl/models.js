@@ -1,3 +1,6 @@
+import { Matrix4x4 } from "../LA/matrix4x4.js";
+import { Vector3 } from "../LA/vector3.js";
+
 // memoization
 const models = {}
 
@@ -29,6 +32,94 @@ function chunkBy(props, sizes) {
 }
 
 
+/**
+ * Returns a position vector in the xz plane, given a step and an
+ * angle in radians.
+ *
+ * @param {number} i - The index of the position to generate.
+ * @param {number} step - The step size of the positions.
+ * @param {number} radians - The angle in radians.
+ * @return {[number, number]} A position vector in the xz plane.
+ */
+const getPos = (i, step, radius) =>
+{
+    return [
+        radius * Math.cos(i * step),
+        radius * Math.sin(i * step)
+    ];
+};
+
+
+function getStep(segments){
+    return 2 * Math.PI / segments;
+}
+
+
+
+/**
+ * Creates a cylinder model with a base color.
+ * Used only for help other models.
+ *
+ * @param {number} radius - The radius of the cylinder.
+ * @param {number} height - The height of the cylinder.
+ * @param {number} [segments=32] - The number of segments in the cylinder.
+ * @return {[Float32Array]} The positions and colors of the cylinder.
+ */
+function baseCylinder(radius, height, segments=32) {
+    const positions = [];
+    const step = getStep(segments);
+
+    for(let i = 0; i < segments; i++) {
+        let [x1, z1] = getPos(i, step, radius);
+        let [x2, z2] = getPos(i + 1, step, radius);
+        
+        positions.push(
+            x1, -height, z1,
+            x2, -height, z2,
+            x2, +height, z2,
+
+            x2, +height, z2,
+            x1, +height, z1,
+            x1, -height, z1
+        );
+    }
+
+    return positions;
+}
+
+
+
+/**
+ * Creates a circle model with a center at (0,0,0) and a base color.
+ * Used only for help other models.
+ *
+ * @param {number} h - The height of the circle.
+ * @param {number[]} color - The color of the circle.
+ * @return {[Float32Array]} The positions and colors of the circle.
+ */
+function baseCenterCircle(radius, segments=32,  spread=0)
+{
+    const positions = [];
+    const pivot = [0, spread, 0];
+    const step = getStep(segments);
+
+    for (let i = 0; i < segments; i++) {
+        let [x1, z1] = getPos(    i, step, radius);
+        let [x2, z2] = getPos(i + 1, step, radius);
+        
+        positions.push(
+            ...pivot,
+            x1, 0, z1,
+            x2, 0, z2,
+        );
+    }
+
+    return positions;
+};
+
+
+
+
 
 
 /**
@@ -49,70 +140,53 @@ function createSkyCylinder(radius, height, segments=32, groundColor=[0, 0, 0], s
         return models[key];
 
     const positions = [];
-    const colors = [];
-
-    const vertexSizes = [3, 3];
-    const step = 2 * Math.PI / segments;
+    const colors = [];    
     
-
-    const getPos = (i) =>
-    {
-        return [
-            radius * Math.cos(i * step),
-            radius * Math.sin(i * step)
-        ];
-    };
-
-    const CylinderCircle = (h, color) =>
-    {
-        const pivot = [radius, h, 0];
-
-        for (let i = 1; i < segments - 1; i++) {
-            let [x1, z1] = getPos(i);
-            let [x2, z2] = getPos(i + 1);
-            
-            const [_pos, _col] = chunkBy(
-                [
-                     ...pivot,      ...color,
-                    x1, h, z1,      ...color,
-                    x2, h, z2,      ...color,
-                ]
-                , [3, 3]);
-
-            positions.push(..._pos);
-            colors.push(..._col);
-        }
-    };
+    const circle = baseCenterCircle(radius, segments, 1);
+    const circleColors = [
+        ...groundColor,
+        ...groundColor,
+        ...groundColor,
+        ...skyColor,
+        ...skyColor,
+        ...skyColor,
+    ];
 
 
-    for(let i = 0; i < segments; i++) {
-        let [x1, z1] = getPos(i);
-        let [x2, z2] = getPos(i + 1);
-        
-        const [pos1, col1] = chunkBy(
-            [
-                x1, -height, z1,    ...groundColor,
-                x2, -height, z2,    ...groundColor,
-                x2, +height, z2,    ...skyColor,
-            ], vertexSizes
+
+    for(let i = 0; i < circle.length; i+=9) {
+        positions.push(
+            circle[i+0], -height, circle[i+2],
+            circle[i+3], -height, circle[i+5],
+            circle[i+6], -height, circle[i+8],
+
+            circle[i+0], +height, circle[i+2],
+            circle[i+3], +height, circle[i+5],
+            circle[i+6], +height, circle[i+8],
         );
-
-        const [pos2, col2] = chunkBy(
-            [
-                x1, +height, z1,    ...skyColor,
-                x2, +height, z2,    ...skyColor,
-                x1, -height, z1,    ...groundColor,
-            ], vertexSizes
-        );
-        positions.push(...pos1, ...pos2);
-        colors.push(...col1, ...col2);
+        colors.push(...circleColors);
     }
+
+
+    const cylinder = baseCylinder(radius, height, segments, groundColor, skyColor);
+    const cylinderColors = [
+        ...groundColor,
+        ...groundColor,
+        ...skyColor,
+        ...skyColor,
+        ...skyColor,
+        ...groundColor,
+    ]
+
     
-    CylinderCircle(+height, skyColor);
-    CylinderCircle(-height, groundColor);
+    positions.push(...cylinder);
+    for(let i = 0; i < cylinder.length/18; i++) {
+        colors.push(...cylinderColors);
+    }
 
+
+    
     positions.push(...colors);
-
     models[key] = [WebGL2RenderingContext.TRIANGLES, new Float32Array(positions)];
 
     return models[key];
@@ -177,12 +251,12 @@ function createAxis(size=1, forceUpdate=false) {
         0, 0, size
     ];
     const colors = [
-        1, 0, 0,
-        1, 0, 0,
-        0, 1, 0,
-        0, 1, 0,
-        0, 0, 1,
-        0, 0, 1,
+        .7, 0, 0,
+        .7, 0, 0,
+        0, .7, 0,
+        0, .7, 0,
+        0, 0, .7,
+        0, 0, .7,
     ];
 
 
@@ -192,14 +266,48 @@ function createAxis(size=1, forceUpdate=false) {
 }
 
 
+/**
+ * Creates a vector model with the given position, color, and stroke.
+ *
+ * @param {Vector3} position - The position of the vector.
+ * @param {number[]} color - The color of the vector.
+ * @param {number} stroke - The stroke of the vector.
+ * @param {boolean} [forceUpdate=false] - Whether to force an update of the model.
+ * @return {[WebGL2RenderingContext.TRIANGLES, Float32Array]} An array containing the WebGL rendering mode (TRIANGLES), an array of positions, and the number of components per group (3).
+ */
 function createVector(position, color, stroke, forceUpdate=false) {
     const key = `vector-${position}-${color}-${stroke}`;
     
     if(key in models && !forceUpdate)
         return models[key];
+    
+    const mag = position.magnitude();
+    const matrix = Matrix4x4.applyAll(
+        Matrix4x4.rotationX(-Math.acos(position.y / mag)),
+        Matrix4x4.rotationY(-Math.atan2(position.x, position.z))
+    );
 
     const positions = [];
+    const spread = .2;
 
+    const circle = baseCenterCircle(stroke*2, 8, spread);
+    const cylinder = baseCylinder(stroke, (mag-spread)/2, 8);
+
+    for(let i = 0; i < circle.length; i += 3)
+        positions.push(  circle[i],  mag + circle[i+1] - spread,   circle[i+2]);
+    
+    for(let i = 0; i < cylinder.length; i += 3)
+        positions.push(cylinder[i], (mag-spread)/2 + cylinder[i+1], cylinder[i+2]);
+    
+    for(let i = 0; i < positions.length; i += 3)
+        [positions[i], positions[i+1], positions[i+2]] = new Vector3(positions[i], positions[i+1], positions[i+2]).applyMatrix(matrix).toArray();
+
+
+
+    
+    
+    const colors = new Array(positions.length).fill(color);
+    positions.push(...colors.flat());
 
     models[key] = [WebGL2RenderingContext.TRIANGLES, positions];
     return models[key];
@@ -207,4 +315,4 @@ function createVector(position, color, stroke, forceUpdate=false) {
 
 
 
-export { createSkyCylinder, createGrid, createAxis };
+export { createSkyCylinder, createGrid, createAxis, createVector };
