@@ -112,7 +112,7 @@ function drawScene() {
     screen.recalcCanvasSize();
 
     setupWebGL(gl, programInfo);
-    gl.clear(gl.COLOR_BUFFER_BIT);
+    gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT);
 
     setupMatrix(
         gl,
@@ -153,8 +153,15 @@ function drawScene() {
         ]
     });
 
-    drawInCanvas(gl, createAxis(axisSize));
     
+    // these axis are in the same position as the grid,
+    // so to avoid them to be drawn on top of the grid
+    // we set the depth test to always pass in this case
+    gl.depthFunc(gl.ALWAYS);
+    drawInCanvas(gl, createAxis(axisSize));
+    gl.depthFunc(gl.LESS);
+    
+
     drawInCanvas(gl, createVector(new Vector3(0,1,1), [1, .2, .2], .02));
 
 }

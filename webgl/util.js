@@ -9,7 +9,9 @@ let programInfo;
  */
 function setupWebGL(gl, _programInfo) {
     gl.useProgram(_programInfo.program);
-    
+    gl.enable(gl.DEPTH_TEST);
+    gl.depthFunc(gl.LESS);
+
     programInfo = _programInfo;
 }
 
