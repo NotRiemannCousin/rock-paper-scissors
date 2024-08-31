@@ -276,8 +276,8 @@ function createAxis(size=1, forceUpdate=false) {
  * @return {[WebGL2RenderingContext.TRIANGLES, Float32Array]} An array containing the WebGL rendering mode (TRIANGLES), an array of positions, and the number of components per group (3).
  */
 function createVector(position, color, stroke, forceUpdate=false) {
-    const key = `vector-${position}-${color}-${stroke}`;
-    
+    const key = `vector-${position.toString()}-${color}-${stroke}`;
+
     if(key in models && !forceUpdate)
         return models[key];
     

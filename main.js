@@ -1,8 +1,10 @@
-import { createSkyCylinder, createGrid, createAxis, createVector } from "./models.js";
-import { setupWebGL, setupMatrix, drawInCanvas } from "./util.js";
-import { initShaderProgram } from "./shader.js";
-import { Matrix4x4 } from '../LA/matrix4x4.js';
-import { Vector3 } from "../LA/vector3.js";
+import { createSkyCylinder, createGrid, createAxis, createVector } from "./webgl/models.js";
+import { setupWebGL, setupMatrix, drawInCanvas } from "./webgl/util.js";
+import { initShaderProgram } from "./webgl/shader.js";
+import { Matrix4x4 } from './LA/matrix4x4.js';
+import { Vector3 } from "./LA/vector3.js";
+import { getCSSColor } from "./util.js";
+import { Game as game } from "./game.js";
 
 
 
@@ -85,7 +87,6 @@ view.rotate(0, 0);
 const shaderProgram = initShaderProgram(gl);
 
 
-
 const programInfo = {
     program: shaderProgram,
     attribs: [
@@ -113,6 +114,8 @@ function drawScene() {
 
     setupWebGL(gl, programInfo);
     gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT);
+    
+    updateCameraView();
 
     setupMatrix(
         gl,
@@ -121,9 +124,6 @@ function drawScene() {
             Matrix4x4.scale(1, 1, 1),
         )
     );
-    
-    updateCameraView();
-
     setupMatrix(
         gl,
         "uViewToProj",
@@ -160,10 +160,19 @@ function drawScene() {
     gl.depthFunc(gl.ALWAYS);
     drawInCanvas(gl, createAxis(axisSize));
     gl.depthFunc(gl.LESS);
+
+
+    const drawVector = (choice) => {
+        if(!choice || choice?.vector === undefined) return;
+        drawInCanvas(gl, createVector(choice.vector, choice.color, .02));
+    }
+    // * the pivot must be drawed every time
+    drawVector(game.pivot);
     
+    drawVector(game.p1());
+    drawVector(game.p2());
 
-    drawInCanvas(gl, createVector(new Vector3(0,1,1), [1, .2, .2], .02));
-
+    drawVector(game.cross);
 }
 
 function updateCameraView(){
@@ -234,3 +243,5 @@ canvas.addEventListener("mousemove", onCanvasMouseMove);
 canvas.addEventListener("wheel", onCanvasScroll, { passive: true });
 
 drawScene();
+
+export { drawScene };

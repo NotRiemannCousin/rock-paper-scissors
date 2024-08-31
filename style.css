@@ -1,20 +1,29 @@
 :root {
+    text-align: center;
+
     --primary-background-color: #e9e9e9;
     --primary-shadow-color: #101010;
     --primary-color: #f9f9f9;
 
-    --accent-background-color: rgba(128, 128, 128, 0.321);
-    --accent-color: rgb(255, 255, 255);
-    --accent-color-outline: rgb(79, 79, 79);
+    --accent-background-color: #80808052;
+    --accent-color: #ffffff;
+    --accent-color-outline: #4f4f4f;
     --accent-color-outline: #000000;
 
     --main-background-color: #6b8598;
     --game-axis-color: #e9e9e9;
 
 
-    --vec-rock-color: #ff4343;
+    --vec-rock-bg-color: #ff4343;
+    --vec-paper-bg-color: #5cfd54;
+    --vec-scissors-bg-color: #6379e7;
+
+    --vec-rock-color: #f20000;
     --vec-paper-color: #5cfd54;
-    --vec-scissors-color: #6379e7;
+    --vec-scissors-color: #4161ff;
+
+    --vec-pivot-color: #fb63f1;
+    --vec-cross-p-color: #f6ff00;
 }
 
 @media (prefers-color-scheme: dark) {
@@ -47,7 +56,7 @@ body {
     overflow: hidden;
 
     color: var(--primary-color);
-    background-color: var(--primary-background-color);
+    background-image: linear-gradient(0deg, var(--primary-background-color), color-mix(in srgb, var(--primary-background-color) 50%, black 50%));
 }
 
 
@@ -82,34 +91,36 @@ form.player-choices label {
     user-select: none;
 
     text-shadow:
-    0 1px 0 var(--accent-color-outline),
-    1px 0 0 var(--accent-color-outline),
-        0 -1px 0 var(--accent-color-outline),
-        -1px 0 0 var(--accent-color-outline),
+           0  1px 0 var(--accent-color-outline),
+         1px    0 0 var(--accent-color-outline),
+           0 -1px 0 var(--accent-color-outline),
+        -1px    0 0 var(--accent-color-outline),
         -1px -1px 0 var(--accent-color-outline),
-        1px 1px 0 var(--accent-color-outline),
-        1px -1px 0 var(--accent-color-outline),
-        -1px 1px 0 var(--accent-color-outline);
+         1px  1px 0 var(--accent-color-outline),
+         1px -1px 0 var(--accent-color-outline),
+        -1px  1px 0 var(--accent-color-outline);
 
     border: .1em solid var(--primary-shadow-color);
     box-shadow: .4em .2em 0 var(--primary-shadow-color);
-    background-color: var(--button-color);
+    /* background-color: var(--button-color); */
+    --button-bg-color: var(--button-base-color);
+    background-image: linear-gradient(-135deg, var(--button-bg-color), color-mix(in srgb, var(--button-bg-color) 50%, black 50%));
 
     display: flex;
     justify-content: center;
     align-items: center;
 }
 
-form.player-choices label[for="rock"] {
-    --button-color: var(--vec-rock-color);
+form.player-choices label[for^="rock"] {
+    --button-base-color: var(--vec-rock-bg-color);
 }
 
-form.player-choices label[for="paper"] {
-    --button-color: var(--vec-paper-color);
+form.player-choices label[for^="paper"] {
+    --button-base-color: var(--vec-paper-bg-color);
 }
 
-form.player-choices label[for="scissors"] {
-    --button-color: var(--vec-scissors-color);
+form.player-choices label[for^="scissors"] {
+    --button-base-color: var(--vec-scissors-bg-color);
 }
 
 form.player-choices input[type="radio"] {
@@ -117,19 +128,36 @@ form.player-choices input[type="radio"] {
 }
 
 form.player-choices label:hover {
-    background-color: color-mix(in srgb, var(--button-color) 100%, white 10%);
+    --button-bg-color: color-mix(in srgb, var(--button-base-color) 100%, white 10%);
 }
 
 form.player-choices label:active {
-    /* 20% more darker */
-    background-color: color-mix(in srgb, var(--button-color) 100%, black 15%);
+    /* 15% more darker */
+    --button-bg-color: color-mix(in srgb, var(--button-base-color) 100%, black 15%);
+}
+
+form.player-choices label:has(:checked){
+    /* 60% more darker */
+    --button-bg-color: color-mix(in srgb, var(--button-base-color) 100%, black 60%);
+
+    text-shadow:
+           0    0 5px #808080,
+           0  1px   0 var(--accent-color-outline),
+         1px    0   0 var(--accent-color-outline),
+           0 -1px   0 var(--accent-color-outline),
+        -1px    0   0 var(--accent-color-outline),
+        -1px -1px   0 var(--accent-color-outline),
+         1px  1px   0 var(--accent-color-outline),
+         1px -1px   0 var(--accent-color-outline),
+        -1px  1px   0 var(--accent-color-outline);
 }
 
 div.main {
     height: 75vh;
     padding: 1em;
     
-    background-color: var(--main-background-color);
+    /* background-color: var(--main-background-color); */
+    background-image: linear-gradient(-180deg, var(--main-background-color), color-mix(in srgb, var(--main-background-color) 50%, black 70%));
     border: .1em solid var(--primary-shadow-color);
     box-shadow: .4em .2em 0 var(--primary-shadow-color);
 }
@@ -139,4 +167,31 @@ canvas.game {
     height: 75%;
 
     border: .1em solid var(--primary-shadow-color);
+}
+
+
+span {
+    color: var(--vec-text-color);
+}
+
+span[data-choice="rock"] {
+    --vec-text-color: var(--vec-rock-color);
+}
+span[data-choice="paper"] {
+    --vec-text-color: var(--vec-paper-color);
+}
+span[data-choice="scissors"] {
+    --vec-text-color: var(--vec-scissors-color);
+}
+span[data-choice="pivot"] {
+    --vec-text-color: var(--vec-pivot-color);
+}
+span[data-choice="cross-p"] {
+    --vec-text-color: var(--vec-cross-p-color);
+}
+
+
+p{
+    font-size: medium;
+    margin: .4em 0;
 }

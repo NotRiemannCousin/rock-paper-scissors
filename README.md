@@ -18,6 +18,6 @@ Rock Paper Scissors works in a similar way. Let's denote $P1$ and $P2$ as the ch
 
 Can you see? In the fist table, where the result is $\vec{0}$, in the second table there is a draw. Where it is $\hat{i}$, $\hat{j}$ or $\hat{k}$ P2 wins and where it these same vectors scalled by $-1$ P1 wins.
 
-If we apply cross product with $\vec{u} = (1,1,1)$ to all vectors in the first table, all cells where the result was $\vec{0}$ becomes $0$. Where it was is $\hat{i}$, $\hat{j}$ or $\hat{k}$ it becomes $1$, and these same vectors scalled by $-1$ the result is $-1$. This way, we mapped all draws to be equals to zero, all times P1 wons to be -1 and all times where p2 wons to be 1.
+If we apply cross product with $\vec{u} = (1,1,1)$ to all vectors in the first table, all cells where the result was $\vec{0}$ becomes $0$. Where it was is $\hat{i}$, $\hat{j}$ or $\hat{k}$ it becomes $1$, and these same vectors scalled by $1$ the result is $1$. This way, we mapped all draws to be equals to zero, all times P1 wons to be 1 and all times where p2 wons to be -1.
 
 This project has a simple implementation of rock paper scissors using this approuch.

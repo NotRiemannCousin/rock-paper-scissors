@@ -6,6 +6,7 @@ class Vector3 {
     z;
 
     static zero = new Vector3(0, 0, 0);
+    static one = new Vector3(1, 1, 1);
 
     static baseI = new Vector3(1, 0, 0);
     static baseJ = new Vector3(0, 1, 0);
@@ -98,7 +99,11 @@ class Vector3 {
      * @return {Vector3} A new vector that is the cross product of the two given vectors.
      */
     static cross(v1, v2) {
-        return new Vector3(v1.x * v2.y - v1.y * v2.x, v1.y * v2.z - v1.z * v2.y, v1.z * v2.x - v1.x * v2.z);
+        return new Vector3(
+            v1.y * v2.z - v1.z * v2.y,
+            v1.z * v2.x - v1.x * v2.z,
+            v1.x * v2.y - v1.y * v2.x
+        );
     }
 
     /**
@@ -149,6 +154,10 @@ class Vector3 {
 
     toArray() {
         return this.getData();
+    }
+
+    toString() {
+        return `(${this.x}, ${this.y}, ${this.z})`;
     }
 }
 
