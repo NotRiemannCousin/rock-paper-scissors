@@ -7,58 +7,65 @@
         <link rel="stylesheet" href="style.css" />
     </head>
     <body>
+        <h1>Rock Paper Scissors</h1>
         <section class="game-container">
-            <form class="player-choices" data-player="0">
-                <label for="rock-1">
-                    Rock
-                    <input type="radio" name="choice" data-name="rock" id="rock-1" value="0" />
-                </label>
-
-                <label for="paper-1">
-                    Paper
-                    <input type="radio" name="choice" data-name="paper" id="paper-1" value="1" />
-                </label>
-
-                <label for="scissors-1">
-                    Scissors
-                    <input type="radio" name="choice" data-name="scissors" id="scissors-1" value="2" />
-                </label>
+            <form data-player="0">
+                <h2>P1</h2>
+                <div class="player-choices">
+                    <label for="rock-1">
+                        Rock
+                        <input type="radio" name="choice" data-name="rock" id="rock-1" value="0" />
+                    </label>
+                    
+                    <label for="paper-1">
+                        Paper
+                        <input type="radio" name="choice" data-name="paper" id="paper-1" value="1" />
+                    </label>
+                    
+                    <label for="scissors-1">
+                        Scissors
+                        <input type="radio" name="choice" data-name="scissors" id="scissors-1" value="2" />
+                    </label>
+                </div>
             </form>
 
             <div class="main">
                 <canvas class="game"> </canvas>
-                <h2>
-                        (
-                            <span class="player-choices" data-choice>P1</span> &times; <span class="player-choices" data-choice>P2</span>
-                        )
-                        &bull;
-                        <span data-choice="pivot">(1, 1, 1)</span>
-                        &equals;
-                        <span class="result">??</span>
-                </h2>
-
-                <p>res = -1 &Implies; Player 1 wins</p>
-                <p>res = 0 &Implies; Draw</p>
-                <p>res = 1 &Implies; Player 2 wins</p>
             </div>
-
-            <form class="player-choices" data-player="1">
-                <label for="rock-2">
-                    Rock
-                    <input type="radio" name="choice" data-name="rock" id="rock-2" value="0" />
-                </label>
-
-                <label for="paper-2">
-                    Paper
-                    <input type="radio" name="choice" data-name="paper" id="paper-2" value="1" />
-                </label>
-
-                <label for="scissors-2">
-                    Scissors
-                    <input type="radio" name="choice" data-name="scissors" id="scissors-2" value="2" />
-                </label>
+            <form data-player="1">
+                <h2>P2</h2>
+                
+                <div class="player-choices">
+                    <label for="rock-2">
+                        Rock
+                        <input type="radio" name="choice" data-name="rock" id="rock-2" value="0" />
+                    </label>
+                    
+                    <label for="paper-2">
+                        Paper
+                        <input type="radio" name="choice" data-name="paper" id="paper-2" value="1" />
+                    </label>
+                    
+                    <label for="scissors-2">
+                        Scissors
+                        <input type="radio" name="choice" data-name="scissors" id="scissors-2" value="2" />
+                    </label>
+                </div>
             </form>
         </section>
+        <h2>
+            (
+                <span class="player-choices" data-choice>P1</span> &times; <span class="player-choices" data-choice>P2</span>
+            )
+            &bull;
+            <span data-choice="pivot">(1, 1, 1)</span>
+            &equals;
+            <span class="result">??</span>
+        </h2>
+
+        <p>res = -1 &Implies; Player 1 wins</p>
+        <p>res = 0 &Implies; Draw</p>
+        <p>res = 1 &Implies; Player 2 wins</p>
     </body>
     <script type="module" src="util.js"></script>
     <script type="module" src="main.js"></script>

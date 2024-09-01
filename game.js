@@ -44,7 +44,7 @@ const Game = {
 
 
 function handlePlayerInput(event) {
-    const playerIndex = event.target.parentNode.parentNode.dataset.player;
+    const playerIndex = event.target.parentNode.parentNode.parentNode.dataset.player;
 
     Game.players[playerIndex] = vectors[event.target.value];
 
@@ -64,7 +64,7 @@ function handlePlayerInput(event) {
     drawScene();
 }
 
-document.querySelectorAll("form.player-choices").forEach(
+document.querySelectorAll("form[data-player]").forEach(
     el => el.addEventListener("change", handlePlayerInput)
 );
 
