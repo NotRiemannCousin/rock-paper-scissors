@@ -26,4 +26,4 @@ If we apply the cross product with $\vec{u} = (1,1,1)$ to all vectors in the fir
 
 This project includes a simple implementation of Rock Paper Scissors using this approach with a visual representation.
 
-![demo](<imgs\table print.png>)
+![demo](<imgs/table print.png>)
