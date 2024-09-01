@@ -54,12 +54,24 @@ function handlePlayerInput(event) {
     vectorText.dataset.choice = Game.players[playerIndex].name;
 
     
-    if (Game.p1() && Game.p2()){
-        Game.cross.vector = Game.p1().vector.cross(Game.p2().vector);
-
-        document.querySelector("span.result").innerHTML = Vector3.one.dot(Game.cross.vector);
+    if (!Game.p1() || !Game.p2())
+    {
+        drawScene();
+        return;
     }
-    
+    Game.cross.vector = Game.p1().vector.cross(Game.p2().vector);
+
+    const result = Vector3.one.dot(Game.cross.vector);
+
+    document.querySelector("span.result").innerHTML = result;
+
+    const resultText = document.querySelectorAll("p");
+    console.log(resultText);
+
+    for(const el of resultText) // remove the class result
+        el.classList.remove("result");
+    resultText[result + 1].classList.add("result");
+
     
     drawScene();
 }

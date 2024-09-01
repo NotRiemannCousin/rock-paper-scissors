@@ -117,6 +117,29 @@ class Vector3 {
 
 
     /**
+     * Checks if two vectors are equal.
+     *
+     * @param {Vector3} v1 - The first vector.
+     * @param {Vector3} v2 - The second vector.
+     * @return {boolean} True if the vectors are equal, false otherwise.
+     */
+    static equals(v1, v2) {
+        return v1.x === v2.x && v1.y === v2.y && v1.z === v2.z;
+    }
+
+
+    /**
+     * Checks if this vector is equal to the given vector.
+     *
+     * @param {Vector3} v - The vector to compare with.
+     * @return {boolean} True if the vectors are equal, false otherwise.
+     */
+    equals(v) {
+        return Vector3.equals(this, v);
+    }
+
+
+    /**
      * Applies a 4x4 matrix to a vector.
      *
      * @param {Vector3} v - The vector to apply the matrix to.
